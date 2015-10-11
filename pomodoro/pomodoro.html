@@ -14,29 +14,34 @@
         <div class="jumbotron">
           <h1>Pomodoro</h1>
           <div class="row">
-            <div class="col-md-3 col-md-offset-3">
-              <h4>Break</h4>
-              <p >
-                 <span class="minusTime glyphicon glyphicon-minus"></span>
-                <span class="break">10</span>
-                <span class="addTime">+</span>
-              </p>
+            <div class="col-md-5 col-md-offset-3 ">
+                <div class="floatrow">
+                  <h4>Timer</h4>
+                  <p >
+                    <span class="minusTime glyphicon glyphicon-chevron-left"></span>
+                    <span class="timer number">10</span>
+                    <span class="addTime glyphicon glyphicon-chevron-right"></span>
+                  </p>
+                </div>
+                <div class="floatrow">
+                  <h4>Break</h4>
+                  <p >
+                     <span class="minusTime glyphicon glyphicon-chevron-left"></span>
+                    <span class="break number">10</span>
+                    <span class="addTime glyphicon glyphicon-chevron-right"></span>
+                  </p>
+                </div>
             </div>
-            <div class="col-md-3">
-              <h4>Timer</h4>
-              <p >
-                <span class="minusTime">-</span>
-                <span class="timer">10</span>
-                <span class="addTime">+</span>
-              </p>
-            </div>
-          </div>
           <div class="row">
             <div class="col-md-12">
               <div class="test">
                 <h1>
                   <span class="clock"><span class="minute">10</span>:00</span>
                 </h1>
+                <h4>
+                  <span class="timermode">Work</span>
+                </h4>
+
                 <svg width="300" height="300" xmlns="http://www.w3.org/2000/svg">
                   <g>
                   <circle id="circle" class="inner" r="109.8"
@@ -52,7 +57,7 @@
         </div>
         <div class="col-md-6 col-md-offset-3">
           <button class="btn btn-default click start" type="submit">Start</button>
-            <button class="btn btn-default click pause" type="submit">Pause</button>
+            <!-- <button class="btn btn-default click pause" type="submit">Pause</button> -->
           <button class="btn btn-default stop" type="submit">Stop</button>
         </div>
       </div>
@@ -63,5 +68,3 @@
     </p>
   </body>
 </html>
-
-http://jsfiddle.net/AbdiasSoftware/YVEhE/8/

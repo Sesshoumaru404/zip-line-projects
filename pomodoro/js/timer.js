@@ -1,90 +1,95 @@
-$(document).ready(function(e) {
-  // var timer = parseInt($('.timer').text(), 10);{
-  var timer;
-  var minutes;
-  var seconds = 0;
-  var c = 0;
-  var t ;
-  var timer_is_on = 0;
-  var innerOffset = '690';
-  var outerOffset = '750';
-  var audioElement = document.createElement('audio');
-  audioElement.setAttribute('src', './audio/buzz.mp3');
-  // audioElement.setAttribute('autoplay', 'autoplay');
-  audioElement.addEventListener('ended', function() {
-       this.currentTime = 0;
-   }, false);
-
-
-  function change() {
-    while (timer > 0) {
-      --timer;
-      $('.clock').text(timer);
-      console.log(timer)
+$(document).ready(function (e) {
+    "use strict";
+    var minutes, interval, breakmins, totalseconds;
+    var breakstart, pause = false;
+    var seconds = 60, innerOffset = '690', outerOffset = '750';
+    var audioElement = document.createElement('audio');
+    audioElement.setAttribute('src', './audio/buzz.mp3');
+    audioElement.addEventListener('ended', function () {this.currentTime = 0; }, false);
+    
+    function stopCount() {
+        clearInterval(interval);
+        interval = minutes = undefined;
+        breakstart = pause = false;
+        seconds = 60;
+        $(".click").text("Start");
+        $('.timermode').text("Work");
+        $('.clock').html("<span class='minute'>" + $(".timer").text() + "</span>:00");
     }
-  }
-
-  function count(event){
-    seconds = (seconds < 10) ? '0' + seconds.toString() : seconds;
-    $('.clock').text(minutes+ ":" + seconds);
-    if (seconds > 0) {
-      --seconds;
-    } else {
-      --minutes
-      seconds = 59
+        
+    function downcount() {
+        seconds = seconds - 1;
+        totalseconds = breakstart ? 0 : totalseconds - 1;
+        if (seconds === 59) {
+            minutes = minutes - 1;
+        }
+        seconds = (seconds < 10) ? '0' + seconds.toString() : seconds;
+        if (seconds === 60) {
+            $('.clock').text(minutes + ":00");
+        } else {
+            $('.clock').text(minutes + ":" + seconds);
+        }
+        $('.inner').css('stroke-dashoffset', 0 + (totalseconds * (innerOffset / 60)));
+        $('.outer').css('stroke-dashoffset', outerOffset - (totalseconds * (outerOffset / (parseInt($('.timer').text(), 10) * 60))));
+        if (seconds == 0) {
+            if (minutes === 0) {
+                if (breakstart) {
+                    audioElement.play();
+                    return stopCount();
+                } else {
+                    audioElement.play();
+                    breakstart = true;
+                    $('.timermode').text("Break");
+                    minutes = breakmins;
+                    $('.clock').text(minutes + ":00");
+                }
+            }
+            seconds = 60;
+        }
     }
-    $('.inner').css('stroke-dashoffset', 0 + (c *(innerOffset/60)))
-    $('.outer').css('stroke-dashoffset', outerOffset-(c *(outerOffset/(timer*60))))
-    $(".testing").text(c)
-    // $(".testing").text(event)
-    if ( c== 0) {
-      clearTimeout(t);
-      audioElement.play();
-      return
+
+    $(".stop").click(function (e) {
+        stopCount();
+        return;
+    });
+
+    $(".addTime").click(function (e) {
+        if (interval) {
+            return;
+        }
+        var x = parseInt($(this).prev().text(), 10) + 1;
+        $(this).prev().text(x);
+        if ($(this).prev().hasClass("timer")) {
+            $(".minute").text(x);
+        }
+    });
+
+    $(".minusTime").click(function (e) {
+        if (interval || parseInt($(this).next().text(), 10) === 1) {
+            return;
+        }
+        var y = parseInt($(this).next().text(), 10) - 1;
+        $(this).next().text(y);
+        if ($(this).next().hasClass("timer")) {
+            $(".minute").text(y);
+        }
+    });
+    
+    function countinterval() {
+        interval = setInterval(downcount, 1000);
     }
-
-    t = setTimeout(function(){ count() }, 1000);
-    --c
-
-  }
-
-  $(".stop").click(function (e) {
-    timer = parseInt($('.clock').text(), 10)
-    clearTimeout(t);
-    $('.clock').html("<span class='minute'>10</span>:00</span>");
-  })
-
-  $(".addTime").click(function (e) {
-    var x = parseInt($(this).prev().text(), 10);
-    $(this).prev().text(++x)
-    if ($(this).prev().hasClass("timer")){
-      $(".minute").text(x)
-    }
-  })
-
-  $(".minusTime").click(function (e) {
-    var y = parseInt($(this).next().text(), 10);
-    $(this).next().text(--y)
-    if ($(this).next().hasClass("timer")){
-      $(".minute").text(y)
-    }
-  })
-
-
-  $(".click").click(function (e) {
-    if ( $(".click").text() == "Pause"){
-      timer = parseInt($('.clock').text(), 10)
-      clearTimeout(t);
-      (".click").text("Start")
-    } else {
-    $(".click").text("Pause")
-      minutes = parseInt($('.clock').text(), 10);
-      timer = parseInt($('.clock').text(), 10);
-      c = 3
-      // c = timer * 60
-      count()
-      (".click").text("Pause")
-
-    }
-  })
+    
+    $(".click").click(function (e) {
+        pause = pause === false ? true : false;
+        if (pause) {
+            $(".click").text("Pause");
+        } else {
+            $(".click").text("Start");
+            return clearInterval(interval);
+        }
+        breakmins = breakmins || parseInt($('.break').text(), 10);
+        minutes = minutes || parseInt($('.clock').text(), 10);
+        totalseconds = totalseconds || minutes * 60;
+        countinterval();
+    });
 });
