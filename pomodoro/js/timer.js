@@ -2,12 +2,12 @@ $(document).ready(function (e) {
     "use strict";
     var minutes, interval, breakmins, totalseconds;
     var breakstart, pause = false;
-    var seconds = 60, innerOffset = '690', outerOffset = '750';
-    var audioElement = document.createElement('audio');
+    var seconds = 60, innerOffset = '690', outerOffset = '750', audioElement = document.createElement('audio');
     audioElement.setAttribute('src', './audio/buzz.mp3');
     audioElement.addEventListener('ended', function () {this.currentTime = 0; }, false);
     
     function stopCount() {
+//        Reset everything and stop timer 
         clearInterval(interval);
         interval = minutes = undefined;
         breakstart = pause = false;
@@ -18,6 +18,7 @@ $(document).ready(function (e) {
     }
         
     function downcount() {
+//        Countdown timer and circle animation 
         seconds = seconds - 1;
         totalseconds = breakstart ? 0 : totalseconds - 1;
         if (seconds === 59) {
@@ -29,9 +30,11 @@ $(document).ready(function (e) {
         } else {
             $('.clock').text(minutes + ":" + seconds);
         }
+        // Cirlce animations
         $('.inner').css('stroke-dashoffset', 0 + (totalseconds * (innerOffset / 60)));
         $('.outer').css('stroke-dashoffset', outerOffset - (totalseconds * (outerOffset / (parseInt($('.timer').text(), 10) * 60))));
         if (seconds == 0) {
+//            If minutes and seconds are zero start break or finish timer
             if (minutes === 0) {
                 if (breakstart) {
                     audioElement.play();
@@ -76,6 +79,7 @@ $(document).ready(function (e) {
     });
     
     function countinterval() {
+//        Timer interval function
         interval = setInterval(downcount, 1000);
     }
     
