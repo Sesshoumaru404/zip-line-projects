@@ -2,6 +2,7 @@
 Zipline projects for freecodecamp.com
 
 Each Folder is a different project
+
 | Folder | Description | Link |
 |--------|-------------|------|
 | **./weather** | Zipline: Build a Random Quote Machine | [Live][1] |
