@@ -1,7 +1,7 @@
 ###Freecodecamp.com Zipline projects
 Zipline projects for freecodecamp.com
 
-##Files
+##Folders
 Each Folder is a different project
 
 | Folder | Description | Link |
